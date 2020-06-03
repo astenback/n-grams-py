@@ -22,7 +22,7 @@ or
 
     $ cat MobyDick.txt | ./n-grams.py
     $ cat OriginOfSpecies.txt | ./n-grams.py
-    $ echo "Hello, HeLLo, HELLO." | n-grams.py
+    $ echo "Hello, HeLLo, HELLO." | ./n-grams.py
 
 Sample Output:
 
