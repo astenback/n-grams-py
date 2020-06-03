@@ -1,55 +1,84 @@
 #!/usr/bin/env python3
 
-import sys
-import select
 import nltk
+import select
+import sys
+from collections import Counter, OrderedDict
 from nltk import ngrams
-from nltk import trigrams
-from collections import Counter
 
-def my_ngrams_from_file():
-
-    f = open(i, "r")
-
-    tokens = nltk.word_tokenize(f.read())
-    for token in tokens:
-        if len(token) >= 1:
-            token = token.lower()
+'''
+Generate ngrams
+'''
 
 
-    trigrams = ngrams(tokens,3)
-    print(Counter(trigrams))
+def myNgrams(text, num, top):
 
-    f.close()
-
-def my_ngrams_from_stdin(text):
-
+    print("Processing text for top", top, "Ngrams of", num)
+    # Tokenize input, convert to lowercase
     tokens = nltk.word_tokenize(text)
     for token in tokens:
         if len(token) >= 1:
             token = token.lower()
 
-    trigrams = ngrams(tokens,3)
-    print(Counter(trigrams))
+    # Remove non-alphanumeric characters (puncuation)
+    tokens = [word for word in tokens if word.isalpha()]
+
+    # Create ordered dictionary of ngrams
+    myNgrams = ngrams(tokens, num)
+    myList = (Counter(myNgrams))
+    myOrderedDictOfNgrams = OrderedDict(myList.most_common(top))
+
+    return myOrderedDictOfNgrams
 
 
-if select.select([sys.stdin,],[],[],0.0)[0]:
+'''
+Execute main
+'''
+if __name__ == "__main__":
 
-    print("Have data! Printing it")
+    # Sets the N in Ngram (bigram, trigram, etc)
+    num = 3
+    top = 5
 
-    text = ""
-    for line in sys.stdin:
-        text += line
+    # Check stdin, if data is present process it, else check command line args
+    if select.select([sys.stdin, ], [], [], 0.0)[0]:
 
-    my_ngrams_from_stdin(text)
+        print("Stdin has data, processing it")
 
-else:
-    print("No data! Checking command line args")
+        text = ""
+        for line in sys.stdin:
+            text += line
 
-    if len(sys.argv) <= 1:
-        print("Usage: n-gram.py <text_file1> <text_file2> ...")
+        myOrderedDictOfNgrams = myNgrams(text, num, top)
+
+
     else:
-        print("Reading command line args")
-        for i in sys.argv[1:]:
-            my_ngrams_from_file()
+        print("No data on std in, checking command line args")
+
+        if len(sys.argv) <= 1:
+            print("Usage: n-gram.py <text_file1> <text_file2> ...")
+
+        else:
+
+            print("Processing data from command line args")
+
+            for i in sys.argv[1:]:
+                # Open file, read and store text
+
+                print("Reading " + i)
+                f = open(i, "r")
+                text = f.read()
+
+                # Process Ngrams
+                myOrderedDictOfNgrams = myNgrams(text, num, top)
+
+                # Print key, values of the ordered dictiony returnd from myNgrams
+                j = 1
+                for key, value in myOrderedDictOfNgrams.items():
+                    print("Top", j, "NGram of", num, "in", i, "is", key, 'with a count of', value)
+                    j += 1
+
+                # Close file
+                f.close()
+
 
