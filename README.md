@@ -1,8 +1,8 @@
 # n-grams-py
 
-Search text for n-grams and print top occurances. Accepts text from file or
+Search text for n-grams and print top occurrences. Accepts text from file or
 stdin. Punctuation is removed and text is processed case-insensitively, since
-everthing is converted to lowercase. n and number of top occurances to print 
+everthing is converted to lowercase. n and number of top occurrences to print 
 are both configurable via variables num and top 
 
 PREREQUISITES:
