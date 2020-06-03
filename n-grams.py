@@ -74,7 +74,7 @@ if __name__ == "__main__":
             print("or")
             print("")
             print("cat MobyDick.txt | ./n-grams.py")
-            print("echo \"Hello, HeLLo, HELLO.\" | n-grams.py")
+            print("echo \"Hello, HeLLo, HELLO.\" | ./n-grams.py")
             print("")
 
         else:
